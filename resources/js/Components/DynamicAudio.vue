@@ -7,19 +7,11 @@ const props = defineProps({
     src: {
         type: String,
     },
-    icon: {
-        type: String,
-        default: "mdi-image-area",
-    },
     record: {
         type: Object,
     },
     field: {
         type: String,
-    },
-    size: {
-        type: String,
-        default: "",
     },
 });
 
@@ -33,15 +25,15 @@ const srcFromRecord =  computed(() => {
     if (props.size)
         sizePrefix = props.size + "-";
 
-    let src = page.props.uploadsFolderView + "/" + props.record.uploadsFolder + "/" + props.field + "/" + sizePrefix + props.record[props.field];
+    let src = page.props.uploadsFolderView + "/" + props.record.uploadsFolder + "/" + props.field + "/" + props.record[props.field];
     return src;
 })
 </script>
 
 <template>
-    <v-img v-if="src" :src="src" contain></v-img>
-
-    <v-img v-else-if="srcFromRecord" :src="srcFromRecord" contain></v-img>
-
-    <v-icon v-else icon="mdi-account"></v-icon>
+    <figure v-if="src || srcFromRecord">
+        <figcaption>Listen to the T-Rex:</figcaption>
+        <audio v-if="src" controls :src="src" class="w-100"></audio>
+        <audio v-else controls :src="srcFromRecord" class="w-100"></audio>
+    </figure>
 </template>

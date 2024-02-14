@@ -38,6 +38,7 @@ class HandleInertiaRequests extends Middleware
             ],
 
             'appName' => config('app.name', ''),
+            'uploadsFolderView' => "/storage",
             'notification' => session()->get('notification'),
 
             'ziggy' => function () use ($request) {

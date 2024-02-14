@@ -40,16 +40,6 @@ class UploadedFilesController extends Controller
             });
         }
 
-        if (!empty($search['from_date']))
-        {
-            $query->whereDate('created_at', '>=', $search['from_date']);
-        }
-
-        if (!empty($search['to_date']))
-        {
-            $query->whereDate('created_at', '<=', $search['to_date']);
-        }
-
         return $query;
     }
 
@@ -62,13 +52,22 @@ class UploadedFilesController extends Controller
 
     public function store(UploadedFilesSaveRequest $request)
     {
-        $data = $request->validated();
-        $data['name'] = $data['name']['name'];
-        $uploadedFile = UploadedFile::create($data);
-        $uploadedFile->processImage($request, 'name', ['imageSizes'=>$uploadedFile->imageSizes]);
-        $uploadedFile->save();
+        $inputFiles = $request->file('name');
 
-        return redirect()->route('uploaded_files.index')->with('notification', config('app-notifications')['record.saved']);
+        foreach ($inputFiles as $key => $inputFile){
+            $data = $request->validated();
+            $data['name'] = $inputFile->getClientOriginalName();
+            $data['extension'] = $inputFile->extension();
+
+            $uploadedFile = UploadedFile::create($data);
+            $uploadedFile->name = $uploadedFile->processFile($inputFile, 'name', ['imageSizes'=>$uploadedFile->imageSizes, 'preserveName'=>true]);
+            $uploadedFile->full_url = url("/storage" . $uploadedFile->uploadsFolder . "/name/" . $uploadedFile->name);
+
+            $uploadedFile->save();
+        }
+
+
+        return redirect()->route('uploaded-files.index')->with('notification', config('app-notifications')['record.saved']);
     }
 
 
@@ -95,16 +94,16 @@ class UploadedFilesController extends Controller
         $uploadedFile->processImage($request, 'name', ['imageSizes'=>$uploadedFile->imageSizes]);
         $uploadedFile->update($data);
 
-        return redirect()->route('uploaded_files.show', [ $uploadedFile->id ])->with('notification', config('app-notifications')['record.saved']);
+        return redirect()->route('uploaded-files.show', [ $uploadedFile->id ])->with('notification', config('app-notifications')['record.saved']);
     }
 
     /* delete permanently */
-    public function delete(string $id)
+    public function destroy(string $id)
     {
         $uploadedFile = UploadedFile::findOrFail($id);
         Storage::deleteDirectory('public' . $uploadedFile->getUploadsFolder());
         $uploadedFile->delete();
-        return redirect()->route('uploaded_files.index')->with('notification', config('app-notifications')['record.deleted']);
+        return redirect()->route('uploaded-files.index')->with('notification', config('app-notifications')['record.deleted']);
     }
 
 }

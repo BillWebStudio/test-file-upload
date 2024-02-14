@@ -1,7 +1,6 @@
-.admin-layout {
+
     .admin-table {
         thead {
-            background-color: #ede7f6 !important;
 
             th {
                 font-weight: bold !important;
@@ -37,4 +36,7 @@
             font-size: 150px;
         }
     }
-}
+
+    .mdi-content-copy {
+        cursor: pointer;
+    }

@@ -29,6 +29,12 @@ const items = computed(() => {
     return props.uploadedFiles;
 });
 
+const copyUrl = (evt) => {
+    navigator.clipboard.writeText(evt.target.dataset.url);
+    alert('URL copied');
+}
+
+let audioExtensions = ["mp3", "wav"];
 
 </script>
 
@@ -66,13 +72,13 @@ const items = computed(() => {
                             <td><Link :href="route('uploaded-files.edit', [ item.id ] )" title="Edit">{{ item.id }}</Link></td>
                             <td>
                                 <v-avatar>
-                                    <app-dynamic-image :record="item" field="name" size="small"></app-dynamic-image>
+                                    <app-dynamic-image v-if="!audioExtensions.includes(item?.extension)" :record="item" field="name" size="small"></app-dynamic-image>
+                                    <v-icon v-else icon="mdi-volume-high"></v-icon>
                                 </v-avatar>
                             </td>
                             <td><Link :href="route('uploaded-files.show', [ item.id ] )" title="View">{{ item.name }}</Link></td>
-                            <td>{{ item.name }}</td>
                             <td>{{ item.extension }}</td>
-                            <td>{{ item.full_url }}</td>
+                            <td>{{ item.full_url }} <v-icon icon="mdi-content-copy" :data-url="item.full_url" @click="copyUrl"></v-icon></td>
                             <td>{{ item.downloaded }}</td>
                             <td>{{ item.created_at }}</td>
 

@@ -51,12 +51,16 @@ class UploadedFile extends Model
             'w' => 300,
             'h' => 300,
         ],
+        'large' => [
+            'w' => 800,
+            'h' => 800,
+        ],
     ];
 
     protected $appends = ['uploadsFolder'];
 
 
-    function getUploadsFolderAttribute() {
+    public function getUploadsFolderAttribute() {
         return $this->getUploadsFolder();
     }
 }

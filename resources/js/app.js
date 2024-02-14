@@ -11,6 +11,7 @@ import link from "@/Plugins/link";
 import Sort from "@/Components/Sort.vue";
 import Pagination from "@/Components/Pagination.vue";
 import DynamicImage from "@/Components/DynamicImage.vue";
+import DynamicAudio from "@/Components/DynamicAudio.vue";
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -30,6 +31,7 @@ const app = createInertiaApp({
             .component('AppSort', Sort)
             .component('AppPagination', Pagination)
             .component('AppDynamicImage', DynamicImage)
+                .component('AppDynamicAudio', DynamicAudio)
             .mount(el)
             ;
         return app;
