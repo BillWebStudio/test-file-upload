@@ -17,7 +17,7 @@ class SaveRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'file' => "nullable|image|mimes:jpeg,png,jpg,mp3,wav|max:5120",
+            'files.*' => "required|mimes:jpeg,png,jpg,mp3,wav|max:10240",
         ];
 
         return $rules;

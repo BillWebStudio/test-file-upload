@@ -34,6 +34,8 @@ let audioExtensions = ["mp3", "wav"];
                             multiple
                         ></v-file-input>
 
+                        <div v-if="errors.name">{{ errors.name }}</div>
+
                     </v-col>
                 </v-row>
 

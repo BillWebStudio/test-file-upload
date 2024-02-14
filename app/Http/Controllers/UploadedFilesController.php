@@ -52,7 +52,7 @@ class UploadedFilesController extends Controller
 
     public function store(UploadedFilesSaveRequest $request)
     {
-        $inputFiles = $request->file('name');
+        $inputFiles = $request->file('files');
 
         foreach ($inputFiles as $key => $inputFile){
             $data = $request->validated();
