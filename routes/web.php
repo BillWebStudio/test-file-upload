@@ -1,6 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Inertia\Inertia;
+
+use App\Http\Controllers\UploadedFilesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,5 +17,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    return Inertia::render('Home');
+})->name('home');
+
+Route::resource('uploaded_files', UploadedFilesController::class)->parameters(['uploaded_files' => 'id']);

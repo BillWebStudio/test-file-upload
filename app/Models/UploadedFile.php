@@ -9,7 +9,7 @@ use Kyslik\ColumnSortable\Sortable;
 use App\Traits\FilesProcessing;
 
 
-class FileUpload extends Model
+class UploadedFile extends Model
 {
     use HasFactory;
     use Sortable;
@@ -40,7 +40,7 @@ class FileUpload extends Model
         ];
 
 
-    public $uploadsModelFolder = "file_uploads";
+    public $uploadsModelFolder = "uploaded_files";
 
     public $imageSizes = [
         'small' => [

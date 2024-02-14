@@ -1,0 +1,40 @@
+.admin-layout {
+    .admin-table {
+        thead {
+            background-color: #ede7f6 !important;
+
+            th {
+                font-weight: bold !important;
+                color: #000000 !important;
+
+                a {
+                    color: #000000 !important;
+                }
+            }
+        }
+
+        .table-actions {
+            text-align: center;
+            min-width: 110px;
+
+            .v-btn {
+                margin: 1px;
+                padding-left: 5px;
+                padding-right: 5px;
+                min-width: 36px;
+            }
+        }
+    }
+
+    .v-avatar {
+        .mdi {
+            font-size: 50px;
+        }
+    }
+
+    .v-avatar-big {
+        .mdi {
+            font-size: 150px;
+        }
+    }
+}

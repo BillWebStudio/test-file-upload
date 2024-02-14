@@ -1,0 +1,28 @@
+.admin-layout .admin-table thead {
+  background-color: #ede7f6 !important;
+}
+.admin-layout .admin-table thead th {
+  font-weight: bold !important;
+  color: #000000 !important;
+}
+.admin-layout .admin-table thead th a {
+  color: #000000 !important;
+}
+.admin-layout .admin-table .table-actions {
+  text-align: center;
+  min-width: 110px;
+}
+.admin-layout .admin-table .table-actions .v-btn {
+  margin: 1px;
+  padding-left: 5px;
+  padding-right: 5px;
+  min-width: 36px;
+}
+.admin-layout .v-avatar .mdi {
+  font-size: 50px;
+}
+.admin-layout .v-avatar-big .mdi {
+  font-size: 150px;
+}
+
+/*# sourceMappingURL=app.css.map */

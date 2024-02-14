@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\FileUploads;
+namespace App\Http\Requests\UploadedFiles;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -17,7 +17,7 @@ class SaveRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'name' => "nullable|image|mimes:jpeg,png,jpg,mp3,wav|max:5120",
+            'file' => "nullable|image|mimes:jpeg,png,jpg,mp3,wav|max:5120",
         ];
 
         return $rules;
