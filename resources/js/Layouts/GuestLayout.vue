@@ -1,9 +1,11 @@
 <script setup>
 import { Link } from '@inertiajs/vue3';
+import {ref} from "vue";
 import Notifications from "@/Components/Notifications.vue";
 
 defineProps({
-    title: String
+    title: String,
+    titleButtons: String
 });
 
 </script>
@@ -23,7 +25,7 @@ defineProps({
 
             <v-toolbar-items class="hidden-sm-and-down">
                 <v-btn :to="route('home')" flat :active="route().current('home')" >Home</v-btn>
-                <v-btn :to="route('uploaded_files.index')" flat >Uploaded Files</v-btn>
+                <v-btn :to="route('uploaded-files.index')" flat :active="route().current('uploaded-files.*')" >Uploaded Files</v-btn>
             </v-toolbar-items>
 
             <div class="hidden-md-and-up" >
@@ -37,7 +39,7 @@ defineProps({
                         </v-list-item>
 
                         <v-list-item v-if="$page.props.auth?.user?.id">
-                            <v-btn :to="route('uploaded_files.index')" flat >Uploaded Files</v-btn>
+                            <v-btn :to="route('uploaded-files.index')" flat :active="route().current('uploaded-files.*')" >Uploaded Files</v-btn>
                         </v-list-item>
                     </v-list>
                 </v-menu>
@@ -45,9 +47,17 @@ defineProps({
 
         </v-toolbar>
 
+
         <v-main class="d-flex align-center justify-center" style="min-height: 300px;">
             <v-container>
-                <h1 v-if="title" class="text-primary">{{ title }}</h1>
+                <v-toolbar-items v-if="title" class="d-flex w-100 justify-space-between align-center">
+                    <h1 class="text-primary">{{ title }}</h1>
+
+                    <div>
+                        <slot name="titleButtons"></slot>
+                    </div>
+                </v-toolbar-items>
+
                 <notifications></notifications>
                 <slot></slot>
             </v-container>

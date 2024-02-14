@@ -10,6 +10,7 @@ const props = defineProps({
 });
 
 function frmDefaults() {
+    console.log(props);
     let options = {};
     for (let item of props.searchInputs){
         let val = page.props[item.name] || '';
@@ -18,8 +19,7 @@ function frmDefaults() {
             switch(item.name)
             {
                 case "status":
-                case "organization_id":
-                case "subscription_plan":
+                case "quiz_id":
                 {
                     val = parseInt(val);
                     break;
@@ -39,10 +39,6 @@ const submit = () => {
     form.get(props.formUrl, {});
 };
 
-const searchInputsFiltered =  computed(() => {
-    let inps = props.searchInputs.filter(item =>(item.name != 'organization' || page.props.auth?.can['manage-organizations']));
-    return inps;
-})
 </script>
 
 
@@ -55,7 +51,7 @@ const searchInputsFiltered =  computed(() => {
                 <div>
                     <v-row>
 
-                        <v-col v-for="inp in searchInputsFiltered" cols="6" md="2" lg="2">
+                        <v-col v-for="inp in searchInputs" cols="6" md="2" lg="2">
 
                             <v-text-field v-if="inp.type == 'text'"
                                           v-model="form[inp.name]"
@@ -64,16 +60,6 @@ const searchInputsFiltered =  computed(() => {
                                           variant="solo-filled"
                                           class="py-1"
                             ></v-text-field>
-
-                            <v-select v-else-if="inp.type == 'country'"
-                                      v-model="form[inp.name]"
-                                      :label="inp.label"
-                                      :items="$page.props.selectOptions.countries"
-                                      clearable
-                                      hide-details
-                                      variant="solo-filled"
-                                      class="py-1"
-                            ></v-select>
 
                             <v-select v-else-if="inp.type == 'select'"
                                       v-model="form[inp.name]"
@@ -105,8 +91,8 @@ const searchInputsFiltered =  computed(() => {
                         </v-col>
 
                         <v-col class="text-no-wrap d-flex align-center">
-                            <v-btn :disabled="form.processing" type="submit" class="mr-2" color="primary" size="x-large" :title="$t('Search')"><v-icon icon="mdi-magnify"></v-icon></v-btn>
-                            <v-btn color="primary" variant="outlined" size="x-large" :to="formUrl" :title="$t('Clear')"><v-icon icon="mdi-close"></v-icon></v-btn>
+                            <v-btn :disabled="form.processing" type="submit" class="mr-2" color="primary" size="x-large" title="Search"><v-icon icon="mdi-magnify"></v-icon></v-btn>
+                            <v-btn color="primary" variant="outlined" size="x-large" :to="formUrl" title="Clear"><v-icon icon="mdi-close"></v-icon></v-btn>
                         </v-col>
 
                     </v-row>

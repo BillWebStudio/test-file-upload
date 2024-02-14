@@ -33,69 +33,53 @@ const items = computed(() => {
 </script>
 
 <template>
-    <AdminLayout :title="pageTitle" >
+    <GuestLayout :title="pageTitle" >
 
         <template v-slot:titleButtons>
-            <v-btn size="large" variant="outlined" :to="route('admin.clients.create')" :title="$t('Add new')"><v-icon icon="mdi-plus"></v-icon> {{$t('Add new')}}</v-btn>
+            <v-btn size="large" variant="outlined" :to="route('uploaded-files.create')" title="Add new"><v-icon icon="mdi-plus"></v-icon> Add new</v-btn>
         </template>
 
         <div>
 
-            <admin-search :form-url="route('admin.clients.index')" :search-inputs="searchInputs"></admin-search>
+            <admin-search :form-url="route('uploaded-files.index')" :search-inputs="searchInputs"></admin-search>
 
             <v-row>
                 <v-col cols="12">
 
                     <v-table class="admin-table">
                         <thead theme="dark">
-                        <tr><th colspan="20" class="table-totals">{{ $t('Total') }}: {{ items.total }}</th></tr>
+                        <tr><th colspan="20" class="table-totals">Total: {{ items.total }}</th></tr>
                         <tr>
-                            <th><app-sort :label="trans('fields.id')" field="id" /></th>
-                            <th>{{ trans('fields.clients.photo') }}</th>
-                            <th><app-sort :label="trans('fields.clients.name')" field="name" /></th>
-                            <th><app-sort :label="trans('fields.clients.email')" field="email" /></th>
-                            <th><app-sort :label="trans('fields.clients.phone')" field="phone" /></th>
-                            <th><app-sort :label="trans('fields.clients.dob')" field="dob" /></th>
-                            <th><app-sort :label="trans('fields.clients.hours_left')" field="hours_left" /></th>
-                            <th><app-sort :label="trans('fields.clients.hours_valid_until')" field="hours_valid_until" /></th>
-                            <th><app-sort :label="trans('fields.status')" field="status" /></th>
-
-                            <th v-if="$page.props.auth.can['manage-organizations']"><app-sort :label="trans('fields.clients.organization_id')" field="organization.name" /></th>
-                            <th v-if="$page.props.auth.can['manage-organizations']"><app-sort :label="trans('fields.clients.admin_id')" field="admin.name" /></th>
-
-                            <th><app-sort :label="trans('fields.clients.referrer')" field="referrer" /></th>
-                            <th><app-sort :label="trans('fields.created_at')" field="created_at" /></th>
-                            <th class="table-actions">{{ trans('Actions') }}</th>
+                            <th><app-sort label="ID" field="id" /></th>
+                            <th>File</th>
+                            <th><app-sort label="Name" field="name" /></th>
+                            <th><app-sort label="Extension" field="extension" /></th>
+                            <th><app-sort label="Full URL" field="full_url" /></th>
+                            <th><app-sort label="# downloaded" field="downloaded" /></th>
+                            <th><app-sort label="Created" field="created_at" /></th>
+                            <th class="table-actions">Actions</th>
                         </tr>
                         </thead>
 
                         <tbody>
                         <tr v-for="item in items.data" :key="item.id">
-                            <td><Link :href="route('admin.clients.edit', [ item.id ] )" :title="$t('Edit')">{{ item.id }}</Link></td>
+                            <td><Link :href="route('uploaded-files.edit', [ item.id ] )" title="Edit">{{ item.id }}</Link></td>
                             <td>
                                 <v-avatar>
-                                    <app-dynamic-image :record="item" field="photo" size="small"></app-dynamic-image>
+                                    <app-dynamic-image :record="item" field="name" size="small"></app-dynamic-image>
                                 </v-avatar>
                             </td>
-                            <td><Link :href="route('admin.clients.show', [ item.id ] )" :title="$t('View')">{{ item.name }}</Link></td>
-                            <td>{{ item.email }}</td>
-                            <td>{{ item.phone }}</td>
-                            <td>{{ item.dob }}</td>
-                            <td>{{ item.hours_left }}</td>
-                            <td>{{ item.hours_valid_until }}</td>
-                            <td>{{ $page.props.enums.activeStatuses[item.status] }}</td>
-
-                            <td v-if="$page.props.auth.can['manage-organizations']">{{ item?.organization?.name }}</td>
-                            <td v-if="$page.props.auth.can['manage-organizations']">{{ item?.admin?.name }}</td>
-
-                            <td>{{ $page.props.enums.referrers[item.referrer] }}</td>
+                            <td><Link :href="route('uploaded-files.show', [ item.id ] )" title="View">{{ item.name }}</Link></td>
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.extension }}</td>
+                            <td>{{ item.full_url }}</td>
+                            <td>{{ item.downloaded }}</td>
                             <td>{{ item.created_at }}</td>
 
                             <td class="table-actions">
-                                <v-btn color="info" variant="outlined"  :to="route('admin.clients.show', [ item.id ] )" :title="$t('View')"><v-icon icon="mdi-eye"></v-icon></v-btn>
-                                <v-btn color="warning" variant="outlined" :to="route('admin.clients.edit', [ item.id ] )" :title="$t('Edit')"><v-icon icon="mdi-file-edit"></v-icon></v-btn>
-                                <v-btn color="success" variant="outlined" :to="route('admin.subscriptions.create', [ item.id ] )" :title="$t('Add Subscription')"><v-icon icon="mdi-currency-usd"></v-icon></v-btn>
-                                <v-btn color="primary" variant="outlined" :to="route('admin.calendar.index' )" :title="$t('Add Visit')"><v-icon icon="mdi-dumbbell"></v-icon></v-btn>
+                                <v-btn color="info" variant="outlined"  :to="route('uploaded-files.show', [ item.id ] )" title="View"><v-icon icon="mdi-eye"></v-icon></v-btn>
+                                <v-btn color="warning" variant="outlined" :to="route('uploaded-files.edit', [ item.id ] )" title="Edit"><v-icon icon="mdi-file-edit"></v-icon></v-btn>
+                                <v-btn color="error" variant="outlined" class="destroyBtn" :data-url="route('uploaded-files.destroy', item.id)" title="Delete"><v-icon icon="mdi-delete"></v-icon></v-btn>
                             </td>
                         </tr>
                         </tbody>
@@ -108,5 +92,5 @@ const items = computed(() => {
 
         </div>
 
-    </AdminLayout>
+    </GuestLayout>
 </template>

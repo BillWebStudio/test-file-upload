@@ -20,4 +20,4 @@ Route::get('/', function () {
     return Inertia::render('Home');
 })->name('home');
 
-Route::resource('uploaded_files', UploadedFilesController::class)->parameters(['uploaded_files' => 'id']);
+Route::resource('uploaded-files', UploadedFilesController::class)->parameters(['uploaded_files' => 'id']);
