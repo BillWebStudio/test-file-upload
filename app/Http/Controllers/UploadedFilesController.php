@@ -7,8 +7,10 @@ use Illuminate\Http\Request;
 
 use Inertia\Inertia;
 use App\Http\Requests\UploadedFiles\SaveRequest as UploadedFilesSaveRequest;
+use App\Http\Requests\UploadedFiles\UpdateRequest as UploadedFilesUpdateRequest;
 use App\Models\UploadedFile;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 
 class UploadedFilesController extends Controller
@@ -85,16 +87,43 @@ class UploadedFilesController extends Controller
     }
 
 
-    public function update(UploadedFilesSaveRequest $request, string $id)
+    public function update(UploadedFilesUpdateRequest $request, string $id)
     {
         $data = $request->validated();
-        $data['name'] = $data['name']['name'];
-
+        $data['extension'] = pathinfo($data['name'], PATHINFO_EXTENSION);
         $uploadedFile = UploadedFile::findOrFail($id);
-        $uploadedFile->processImage($request, 'name', ['imageSizes'=>$uploadedFile->imageSizes]);
-        $uploadedFile->update($data);
 
-        return redirect()->route('uploaded-files.show', [ $uploadedFile->id ])->with('notification', config('app-notifications')['record.saved']);
+        $validator = Validator::make($request->all(), []);
+
+        if ($data['extension'] != $uploadedFile->extension) {
+            $validator->after(function ($validator) {
+                $validator->errors()->add(
+                    'name', 'File extensions do not match.'
+                );
+            });
+
+            return redirect()->route('uploaded-files.edit', [ $uploadedFile->id ])->withErrors($validator)->withInput();
+        }
+
+        $oldFileName = '/public'.$uploadedFile->uploadsFolder . "/name/" . $uploadedFile->name;
+        $newFileName = $uploadedFile->uploadsFolder . "/name/" . $data['name'];
+        //dd([$oldFileName, $newFileName]);
+        $uploadedFile->full_url = url('storage'.$newFileName);
+        Storage::move($oldFileName, '/public' . $newFileName);
+
+        if (!in_array($uploadedFile->extension, ['mp3', 'wav'])){
+            foreach ($uploadedFile->imageSizes as $size => $options){
+                $oldFileName = '/public'.$uploadedFile->uploadsFolder . "/name/" . $size . "-" . $uploadedFile->name;
+                $newFileName = $uploadedFile->uploadsFolder . "/name/" . $size . "-" . $data['name'];
+                //dd([$oldFileName, $newFileName]);
+                Storage::move($oldFileName, '/public' . $newFileName);
+            }
+        }
+
+        $uploadedFile->update($data);
+        $uploadedFile->save();
+
+        return redirect()->route('uploaded-files.index')->with('notification', config('app-notifications')['record.saved']);
     }
 
     /* delete permanently */

@@ -18,7 +18,7 @@ const pageTitle = computed(() => {
 
 const form = useForm({
     _method: 'put',
-    name: null,
+    name: props?.uploadedFile?.name,
 });
 
 const submit = () => {
@@ -36,7 +36,26 @@ const submit = () => {
             <v-form @submit.prevent="submit" class="my-4">
                 <v-container>
 
-                    <form-fields :form="form" :uploadedFile="uploadedFile"></form-fields>
+                    <v-row>
+
+                        <v-col cols="12" md="6">
+                            <h2 class="mb-5">Rename file</h2>
+
+                            <v-row>
+                                <v-col cols="12">
+                                    <v-text-field
+                                        v-model="form.name"
+                                        label="File Name"
+                                        :error-messages="form.errors.name"
+                                        @click="form.errors.name=null"
+                                        variant="solo-filled"
+                                        required
+                                    ></v-text-field>
+                                </v-col>
+                            </v-row>
+
+                        </v-col>
+                    </v-row>
 
                     <v-col class="d-flex align-center ga-2">
                         <v-btn :disabled="form.processing" type="submit" color="primary" size="large" title="Save">Save</v-btn>
