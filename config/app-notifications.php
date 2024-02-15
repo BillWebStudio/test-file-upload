@@ -20,5 +20,9 @@ return [
     'record.restored' => [
         'type' => 'success',
         'text' => 'Record restored'
-    ]
+    ],
+    'file.not_found' => [
+        'type' => 'danger',
+        'text' => 'File was not found'
+    ],
 ];

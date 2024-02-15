@@ -20,4 +20,7 @@ Route::get('/', function () {
     return Inertia::render('Home');
 })->name('home');
 
+Route::controller(UploadedFilesController::class)->prefix('uploaded-files')->group(function(){
+    Route::get('/{id}/download', 'download')->name('uploaded-files.download');
+});
 Route::resource('uploaded-files', UploadedFilesController::class)->parameters(['uploaded_files' => 'id']);

@@ -85,6 +85,7 @@ let audioExtensions = ["mp3", "wav"];
                             <td class="table-actions">
                                 <v-btn color="info" variant="outlined"  :to="route('uploaded-files.show', [ item.id ] )" title="View"><v-icon icon="mdi-eye"></v-icon></v-btn>
                                 <v-btn color="warning" variant="outlined" :to="route('uploaded-files.edit', [ item.id ] )" title="Edit"><v-icon icon="mdi-file-edit"></v-icon></v-btn>
+                                <v-btn color="success" variant="outlined" :to="route('uploaded-files.download', [ item.id ] )" title="Download" target="_blank"><v-icon icon="mdi-download"></v-icon></v-btn>
                                 <v-btn color="error" variant="outlined" class="destroyBtn" :data-url="route('uploaded-files.destroy', item.id)" title="Delete"><v-icon icon="mdi-delete"></v-icon></v-btn>
                             </td>
                         </tr>

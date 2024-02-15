@@ -5,12 +5,15 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Validator;
+
 use Inertia\Inertia;
 use App\Http\Requests\UploadedFiles\SaveRequest as UploadedFilesSaveRequest;
 use App\Http\Requests\UploadedFiles\UpdateRequest as UploadedFilesUpdateRequest;
 use App\Models\UploadedFile;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
+
 
 
 class UploadedFilesController extends Controller
@@ -108,7 +111,7 @@ class UploadedFilesController extends Controller
         $oldFileName = '/public'.$uploadedFile->uploadsFolder . "/name/" . $uploadedFile->name;
         $newFileName = $uploadedFile->uploadsFolder . "/name/" . $data['name'];
         //dd([$oldFileName, $newFileName]);
-        $uploadedFile->full_url = url('storage'.$newFileName);
+        $data['full_url'] = url('storage'.$newFileName);
         Storage::move($oldFileName, '/public' . $newFileName);
 
         if (!in_array($uploadedFile->extension, ['mp3', 'wav'])){
@@ -121,7 +124,7 @@ class UploadedFilesController extends Controller
         }
 
         $uploadedFile->update($data);
-        $uploadedFile->save();
+       // $uploadedFile->save();
 
         return redirect()->route('uploaded-files.index')->with('notification', config('app-notifications')['record.saved']);
     }
@@ -134,5 +137,19 @@ class UploadedFilesController extends Controller
         $uploadedFile->delete();
         return redirect()->route('uploaded-files.index')->with('notification', config('app-notifications')['record.deleted']);
     }
+
+
+    public function download(string $id)
+    {
+        $uploadedFile = UploadedFile::findOrFail($id);
+        $filePath = public_path("storage" . $uploadedFile->uploadsFolder . "/name/" . $uploadedFile->name);
+
+        if (!File::exists($filePath))
+            return redirect()->route('uploaded-files.index')->with('notification', config('app-notifications')['file.not_found']);
+
+        $uploadedFile->downloaded = ++$uploadedFile->downloaded;
+        $uploadedFile->save();
+        return response()->download($filePath);
+   }
 
 }
