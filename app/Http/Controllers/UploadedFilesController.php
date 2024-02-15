@@ -124,7 +124,6 @@ class UploadedFilesController extends Controller
         }
 
         $uploadedFile->update($data);
-       // $uploadedFile->save();
 
         return redirect()->route('uploaded-files.index')->with('notification', config('app-notifications')['record.saved']);
     }
@@ -151,5 +150,12 @@ class UploadedFilesController extends Controller
         $uploadedFile->save();
         return response()->download($filePath);
    }
+
+
+    public function preview(string $id)
+    {
+        $uploadedFile = UploadedFile::findOrFail($id);
+        return response()->json(compact('uploadedFile'));
+    }
 
 }

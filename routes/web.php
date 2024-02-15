@@ -22,5 +22,6 @@ Route::get('/', function () {
 
 Route::controller(UploadedFilesController::class)->prefix('uploaded-files')->group(function(){
     Route::get('/{id}/download', 'download')->name('uploaded-files.download');
+    Route::get('/{id}/preview', 'preview')->name('uploaded-files.preview');
 });
 Route::resource('uploaded-files', UploadedFilesController::class)->parameters(['uploaded_files' => 'id']);

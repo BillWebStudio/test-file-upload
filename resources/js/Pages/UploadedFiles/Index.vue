@@ -1,8 +1,10 @@
 <script setup>
-import {computed} from "vue";
+import {computed, ref} from "vue";
 import {usePage, Link} from "@inertiajs/vue3";
 import GuestLayout from '@/Layouts/GuestLayout.vue';
 import AdminSearch from "@/Components/Admin/AdminSearch.vue";
+import Modal from "@/Components/Modal.vue";
+import UploadedFilesPreview from "@/Pages/UploadedFiles/Preview.vue";
 
 const props = defineProps({
     uploadedFiles: Object,
@@ -35,6 +37,28 @@ const copyUrl = (evt) => {
 }
 
 let audioExtensions = ["mp3", "wav"];
+
+const modalOptions = ref({
+    show: false,
+    title: 'Preview',
+    item: {}
+});
+
+
+function previewFile(id){
+    axios.get(route("uploaded-files.preview", id))
+        .then(function (response) {
+            console.log(response);
+            modalOptions.value = {
+                show: true,
+                item: response?.data?.uploadedFile
+            };
+        })
+        .catch(function (error) {
+            let msg = error.response.data.message || error.message;
+            alert(msg);
+        });
+}
 
 </script>
 
@@ -76,14 +100,18 @@ let audioExtensions = ["mp3", "wav"];
                                     <v-icon v-else icon="mdi-volume-high"></v-icon>
                                 </v-avatar>
                             </td>
-                            <td><Link :href="route('uploaded-files.show', [ item.id ] )" title="View">{{ item.name }}</Link></td>
+                            <td><a href="#" @click.prevent="previewFile(item.id)" title="View">{{ item.name }}</a></td>
                             <td>{{ item.extension }}</td>
                             <td>{{ item.full_url }} <v-icon icon="mdi-content-copy" :data-url="item.full_url" @click="copyUrl"></v-icon></td>
                             <td>{{ item.downloaded }}</td>
                             <td>{{ item.created_at }}</td>
 
                             <td class="table-actions">
+                                <!--
                                 <v-btn color="info" variant="outlined"  :to="route('uploaded-files.show', [ item.id ] )" title="View"><v-icon icon="mdi-eye"></v-icon></v-btn>
+                                -->
+                                <v-btn color="info" variant="outlined" @click="previewFile(item.id)" title="View"><v-icon icon="mdi-eye"></v-icon></v-btn>
+
                                 <v-btn color="warning" variant="outlined" :to="route('uploaded-files.edit', [ item.id ] )" title="Edit"><v-icon icon="mdi-file-edit"></v-icon></v-btn>
                                 <v-btn color="success" variant="outlined" :to="route('uploaded-files.download', [ item.id ] )" title="Download" target="_blank"><v-icon icon="mdi-download"></v-icon></v-btn>
                                 <v-btn color="error" variant="outlined" class="destroyBtn" :data-url="route('uploaded-files.destroy', item.id)" title="Delete"><v-icon icon="mdi-delete"></v-icon></v-btn>
@@ -98,6 +126,19 @@ let audioExtensions = ["mp3", "wav"];
             </v-row>
 
         </div>
+
+        <Modal
+            v-if="modalOptions.show"
+            :show="modalOptions.show"
+            :title="modalOptions.title"
+            @close="modalOptions.show = false"
+            persistent
+        >
+            <uploaded-files-preview v-if="modalOptions.item"
+                         :uploadedFile="modalOptions.item"
+                         @close="modalOptions.show = false"
+            ></uploaded-files-preview>
+        </Modal>
 
     </GuestLayout>
 </template>
