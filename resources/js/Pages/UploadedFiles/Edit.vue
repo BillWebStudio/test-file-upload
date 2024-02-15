@@ -2,7 +2,6 @@
 import {computed} from "vue";
 import {useForm, usePage} from '@inertiajs/vue3';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
-import FormFields from "@/Pages/UploadedFiles/formFields.vue";
 
 const props = defineProps({
     uploadedFile: {
@@ -24,7 +23,6 @@ const form = useForm({
 const submit = () => {
     form.post(route('uploaded-files.update', props.uploadedFile.id), {});
 };
-
 
 </script>
 
@@ -57,10 +55,12 @@ const submit = () => {
                         </v-col>
                     </v-row>
 
-                    <v-col class="d-flex align-center ga-2">
-                        <v-btn :disabled="form.processing" type="submit" color="primary" size="large" title="Save">Save</v-btn>
-                        <v-btn color="primary" variant="outlined" size="large" :to="route('uploaded-files.index')" title="Cancel">Cancel</v-btn>
-                    </v-col>
+                    <v-row>
+                        <v-col class="d-flex align-center ga-2">
+                            <v-btn :disabled="form.processing" type="submit" color="primary" size="large" title="Save">Save</v-btn>
+                            <v-btn color="primary" variant="outlined" size="large" :to="route('uploaded-files.index')" title="Cancel">Cancel</v-btn>
+                        </v-col>
+                    </v-row>
 
                 </v-container>
 

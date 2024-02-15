@@ -2,7 +2,6 @@
 import {computed} from "vue";
 import { useForm, usePage } from '@inertiajs/vue3';
 import GuestLayout from '@/Layouts/GuestLayout.vue';
-import FormFields from "@/Pages/UploadedFiles/formFields.vue";
 
 const props = defineProps({
     uploadedFile: {
@@ -18,10 +17,11 @@ const pageTitle = computed(() => {
 
 const fileErrors = computed(() => {
     let err = '';
+
     for (let key in page.props.errors){
         err += page.props.errors[key] + "\n";
     }
-   // let err = page.props.errors.join(" and ")
+
     return err;
 });
 
@@ -82,10 +82,12 @@ let audioExtensions = ["mp3", "wav"];
 
                     </v-row>
 
-                    <v-col class="d-flex align-center ga-2">
-                        <v-btn :disabled="form.processing" type="submit" color="primary" size="large" title="Save">Save</v-btn>
-                        <v-btn color="primary" variant="outlined" size="large" :to="route('uploaded-files.index')" title="Cancel">Cancel</v-btn>
-                    </v-col>
+                    <v-row>
+                        <v-col class="d-flex align-center ga-2">
+                            <v-btn :disabled="form.processing" type="submit" color="primary" size="large" title="Save">Save</v-btn>
+                            <v-btn color="primary" variant="outlined" size="large" :to="route('uploaded-files.index')" title="Cancel">Cancel</v-btn>
+                        </v-col>
+                    </v-row>
 
                 </v-container>
 

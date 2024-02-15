@@ -4,6 +4,7 @@ import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
+import CKEditor from '@ckeditor/ckeditor5-vue';
 
 import vuetify from '@/Plugins/vuetify';
 import link from "@/Plugins/link";
@@ -28,6 +29,7 @@ const app = createInertiaApp({
             .use(ZiggyVue, Ziggy)
             .use(vuetify)
             .use(link)
+            .use(CKEditor)
             .component('AppSort', Sort)
             .component('AppPagination', Pagination)
             .component('AppDynamicImage', DynamicImage)

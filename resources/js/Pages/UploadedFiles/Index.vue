@@ -16,7 +16,6 @@ const pageTitle = computed(() => {
     return "Uploaded Files";
 });
 
-//Have to make computed in order to make trans work on 1st load
 const searchInputs = computed(() => {
     return [
         {

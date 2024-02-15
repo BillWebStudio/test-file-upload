@@ -20,6 +20,10 @@ Route::get('/', function () {
     return Inertia::render('Home');
 })->name('home');
 
+Route::get('/editor', function () {
+    return Inertia::render('Editor');
+})->name('editor');
+
 Route::controller(UploadedFilesController::class)->prefix('uploaded-files')->group(function(){
     Route::get('/{id}/download', 'download')->name('uploaded-files.download');
     Route::get('/{id}/preview', 'preview')->name('uploaded-files.preview');

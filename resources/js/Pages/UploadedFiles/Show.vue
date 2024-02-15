@@ -62,16 +62,16 @@ let audioExtensions = ["mp3", "wav"];
                             <v-col cols="12" sm="9">{{ uploadedFile.created_at }}</v-col>
                         </v-row>
                     </v-col>
-
-
                 </v-row>
 
-                
-                <v-col class="d-flex align-center mt-4 ga-2">
-                    <v-btn color="primary" variant="outlined" size="large" :to="route('uploaded-files.index')" title="Index">Index</v-btn>
-                    <v-btn color="warning" size="large" :to="route('uploaded-files.edit', uploadedFile.id)" title="Edit">Edit</v-btn>
-                    <v-btn color="error" size="large" class="destroyBtn" :data-url="route('uploaded-files.destroy', uploadedFile.id)" title="Delete">Delete</v-btn>
-                </v-col>
+                <v-row>
+                    <v-col class="d-flex align-center mt-4 ga-2">
+                        <v-btn color="primary" variant="outlined" size="large" :to="route('uploaded-files.index')" title="Index">Index</v-btn>
+                        <v-btn color="warning" size="large" :to="route('uploaded-files.edit', uploadedFile.id)" title="Edit">Edit</v-btn>
+                        <v-btn color="error" size="large" class="destroyBtn" :data-url="route('uploaded-files.destroy', uploadedFile.id)" title="Delete">Delete</v-btn>
+                    </v-col>
+                </v-row>
+
             </v-container>
         </div>
 

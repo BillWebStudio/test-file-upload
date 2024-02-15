@@ -26,6 +26,7 @@ defineProps({
             <v-toolbar-items class="hidden-sm-and-down">
                 <v-btn :to="route('home')" flat :active="route().current('home')" >Home</v-btn>
                 <v-btn :to="route('uploaded-files.index')" flat :active="route().current('uploaded-files.*')" >Uploaded Files</v-btn>
+                <v-btn :to="route('editor')" flat :active="route().current('editor')" >Editor</v-btn>
             </v-toolbar-items>
 
             <div class="hidden-md-and-up" >
@@ -38,8 +39,12 @@ defineProps({
                             <v-btn :to="route('home')" flat :active="route().current('home')" >Home</v-btn>
                         </v-list-item>
 
-                        <v-list-item v-if="$page.props.auth?.user?.id">
+                        <v-list-item>
                             <v-btn :to="route('uploaded-files.index')" flat :active="route().current('uploaded-files.*')" >Uploaded Files</v-btn>
+                        </v-list-item>
+
+                        <v-list-item>
+                            <v-btn :to="route('editor')" flat :active="route().current('editor')" >Editor</v-btn>
                         </v-list-item>
                     </v-list>
                 </v-menu>
